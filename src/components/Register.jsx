@@ -1,14 +1,12 @@
 import { postRegisterUser } from "../api";
 import React, { useState } from "react";
 
-const Register = ({
-  username,
-  setUsername,
-  password,
-  setPassword,
-  error,
-  setError,
-}) => {
+const Register = () => {
+  
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
+  const [error, setError] = useState();
+
   const handleUsername = (e) => setUsername(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
 
