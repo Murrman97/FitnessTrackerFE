@@ -1,11 +1,18 @@
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import { BrowserRouter as Router } from 'react-router-dom'
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import { BrowserRouter as Router } from "react-router-dom";
+import AuthProvider from "./components/AuthProvider";
 
-const container = document.getElementById('root')
+const container = document.getElementById("root");
 
 // Create a root.
-const root = ReactDOM.createRoot(container)
+const root = ReactDOM.createRoot(container);
 
 // Initial render
-root.render(<Router><App /></Router>)
+root.render(
+  <Router>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </Router>
+);

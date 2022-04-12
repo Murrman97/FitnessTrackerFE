@@ -5,6 +5,7 @@ import {
   patchActivities,
   getActivitiesByRoutines,
 } from "../api";
+import useAuth from "../hooks/useAuth";
 
 const Activities = ({ activitiesList, setActivitiesList }) => {
   useEffect(() => {

@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Activities, Register, Login, Routines } from "./components";
+import { Activities, Register, Login, Routines, Navbar } from "./components";
 
 function App() {
   const [activitiesList, setActivitiesList] = useState();
   const [routineList, setRoutineList] = useState();
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
-  const [error, setError] = useState();
 
   return (
+    <div>
+    <div id="app-control">
+        <Navbar />
+        <h1>Fitness Tracker</h1>
+
+
+      </div>
     <Routes>
       <Route
-        path='/activities'
+        path="/activities"
         element={
           <Activities
             activitiesList={activitiesList}
@@ -21,40 +25,17 @@ function App() {
         }
       />
       <Route
-        path='/routines'
+        path="/routines"
         element={
           <Routines routineList={routineList} setRoutineList={setRoutineList} />
         }
       />
-      <Route path='/My-Routines' element={<Activities />} />
-      <Route
-        path='/login'
-        element={
-          <Login
-            username={username}
-            password={password}
-            setUsername={setUsername}
-            setPassword={setPassword}
-            error={error}
-            setError={setError}
-          />
-        }
-      />
-      <Route
-        path='/register'
-        element={
-          <Register
-            username={username}
-            password={password}
-            setUsername={setUsername}
-            setPassword={setPassword}
-            error={error}
-            setError={setError}
-          />
-        }
-      />
-      <Route path='/' element={<Activities />} />
+      <Route path="/My-Routines" element={<Activities />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/" element={<Activities />} />
     </Routes>
+    </div>
   );
 }
 

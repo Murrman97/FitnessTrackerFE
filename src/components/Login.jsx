@@ -1,45 +1,46 @@
 import { postLoginUser } from "../api";
 import React, { useState } from "react";
-import { handleUsername, handlePassword } from "./Register";
+import useAuth from "../hooks/useAuth";
 
-const Login = ({
-  username,
-  setUsername,
-  password,
-  setPassword,
-  error,
-  setError,
-}) => {
+const Login = ({}) => {
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
+  const [error, setError] = useState();
+
+  const {loggedIn, setLoggedIn} = useAuth()
+
   const handleUsername = (e) => setUsername(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = await postLoginUser(username, password);
+   const user = await postLoginUser(username, password);
     console.log(user);
-    const token = await user.token;
-    localStorage.setItem("token", token);
     if (user.error) {
       setError(user.error);
+    } else {
+      const token = await user.token;
+      localStorage.setItem("token", token);
+      setLoggedIn(true);
     }
   };
   return (
-    <div className='login'>
+    <div className="login">
       {{ error } ? <h1>{error}</h1> : null}
       <form onSubmit={handleSubmit}>
         <input
           value={username}
-          type='text'
-          placeholder='username'
+          type="text"
+          placeholder="username"
           onChange={handleUsername}
         />
         <input
           value={password}
-          type='password'
-          placeholder='password'
+          type="password"
+          placeholder="password"
           onChange={handlePassword}
         />
-        <button type='submit'>Login</button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );
