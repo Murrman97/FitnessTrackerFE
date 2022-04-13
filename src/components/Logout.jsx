@@ -1,25 +1,23 @@
-import React, {useState} from "react";
-import useAuth from '../hooks/useAuth'
-
+import React, { useState } from "react";
+import useAuth from "../hooks/useAuth";
 
 const Logout = () => {
-  const {setToken, setLoggedIn} = useAuth()  
+  const { setToken, setLoggedIn } = useAuth();
   const logoutUser = () => {
-
-      setLoggedIn(false);
-      setToken(false)
-      localStorage.removeitem("token");
-    };
-  
-    return (
-      <form
-        onSubmit={() => {
-          logoutUser();
-        }}
-      >
-        <button type="submit">Logout</button>
-      </form>
-    );
+    setLoggedIn(false);
+    setToken(false);
+    localStorage.removeItem("token");
   };
-  
-  export default Logout;
+
+  return (
+    <form
+      onSubmit={() => {
+        logoutUser();
+      }}
+    >
+      <button type='submit'>Logout</button>
+    </form>
+  );
+};
+
+export default Logout;
