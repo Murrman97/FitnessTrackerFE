@@ -7,14 +7,14 @@ const Login = ({}) => {
   const [password, setPassword] = useState();
   const [error, setError] = useState();
 
-  const {loggedIn, setLoggedIn} = useAuth()
+  const { loggedIn, setLoggedIn, setToken } = useAuth();
 
   const handleUsername = (e) => setUsername(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   const user = await postLoginUser(username, password);
+    const user = await postLoginUser(username, password);
     console.log(user);
     if (user.error) {
       setError(user.error);
@@ -22,25 +22,26 @@ const Login = ({}) => {
       const token = await user.token;
       localStorage.setItem("token", token);
       setLoggedIn(true);
+      setToken(localStorage.getItem("token"));
     }
   };
   return (
-    <div className="login">
+    <div className='login'>
       {{ error } ? <h1>{error}</h1> : null}
       <form onSubmit={handleSubmit}>
         <input
           value={username}
-          type="text"
-          placeholder="username"
+          type='text'
+          placeholder='username'
           onChange={handleUsername}
         />
         <input
           value={password}
-          type="password"
-          placeholder="password"
+          type='password'
+          placeholder='password'
           onChange={handlePassword}
         />
-        <button type="submit">Login</button>
+        <button type='submit'>Login</button>
       </form>
     </div>
   );

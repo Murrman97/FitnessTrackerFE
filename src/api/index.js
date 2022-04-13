@@ -47,7 +47,22 @@ const getAllActivities = async () => {
   return data;
 };
 
-const postActivities = async () => {};
+const postActivities = async (name, description, token) => {
+  const result = await fetch(`${BASEURL}/activities`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      name,
+      description,
+    }),
+  });
+  const data = await result.json();
+  console.log(result);
+  return data;
+};
 
 const patchActivities = async () => {};
 

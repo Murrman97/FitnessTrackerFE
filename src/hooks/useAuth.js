@@ -4,7 +4,7 @@ import AuthContext from '../AuthContext'
 // const context = useContext(AuthContext)
 
 const useAuth = () => {
-  const { user, setUser, token, setToken, loggedIn, setLoggedIn } = useContext(AuthContext)
+  const { user, setUser, token, setToken, loggedIn, setLoggedIn,  } = useContext(AuthContext)
 
   return {
     user,
@@ -15,5 +15,6 @@ const useAuth = () => {
     setLoggedIn
   }
 }
+
 
 export default useAuth

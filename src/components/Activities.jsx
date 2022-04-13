@@ -6,8 +6,14 @@ import {
   getActivitiesByRoutines,
 } from "../api";
 import useAuth from "../hooks/useAuth";
+import useContent from "../hooks/useContent";
 
-const Activities = ({ activitiesList, setActivitiesList }) => {
+const Activities = ({}) => {
+  const { activitiesList, setActivitiesList } = useContent();
+  const { loggedIn, token } = useAuth();
+  const [title, setTitle] = useState();
+  const [description, setDescription] = useState();
+
   useEffect(() => {
     const allActivities = async () => {
       const results = await getAllActivities();
@@ -16,8 +22,46 @@ const Activities = ({ activitiesList, setActivitiesList }) => {
     };
     allActivities();
   }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const anon = async () => {
+      console.log(token);
+      const response = await postActivities(title, description, token);
+      setActivitiesList([response, ...activitiesList]);
+    };
+    anon();
+  };
+
+  const handleTitle = (e) => {
+    e.preventDefault();
+    setTitle(e.target.value);
+  };
+
+  const handleDescription = (e) => {
+    e.preventDefault();
+    setDescription(e.target.value);
+  };
+
   return (
     <div>
+      {loggedIn ? (
+        <form onSubmit={handleSubmit}>
+          <input
+            value={title}
+            type='text'
+            placeholder='title'
+            onChange={handleTitle}
+          ></input>
+          <input
+            value={description}
+            type='text'
+            placeholder='description'
+            onChange={handleDescription}
+          ></input>
+          <button type='submit'>Create</button>
+        </form>
+      ) : null}
       {activitiesList ? (
         <>
           {activitiesList.map((activity) => {

@@ -14,6 +14,7 @@ const Routines = ({ routineList, setRoutineList }) => {
 
   return (
     <div className="routines">
+      {}
       {routineList ? (
         <>
           {routineList.map((routine) => {
