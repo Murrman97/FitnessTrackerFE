@@ -7,7 +7,7 @@ const Login = ({}) => {
   const [password, setPassword] = useState();
   const [error, setError] = useState();
 
-  const { loggedIn, setLoggedIn, setToken } = useAuth();
+  const { loggedIn, setLoggedIn, setToken, setUser } = useAuth();
 
   const handleUsername = (e) => setUsername(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
@@ -23,6 +23,7 @@ const Login = ({}) => {
       localStorage.setItem("token", token);
       setLoggedIn(true);
       setToken(localStorage.getItem("token"));
+      setUser(user.user.username)
     }
   };
   return (

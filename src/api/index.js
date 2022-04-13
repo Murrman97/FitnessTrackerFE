@@ -35,7 +35,17 @@ const postLoginUser = async (username, password) => {
   return data;
 };
 
-const getUserRoutines = async () => {};
+const getUserRoutines = async (username, token) => {
+  const result = await fetch(`${BASEURL}/users/${username}/routines`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await result.json();
+  return data;
+};
+
 
 const getUserProfile = async (token) => {
   const result = await fetch(`${BASEURL}/users/me`, {
@@ -120,4 +130,5 @@ export {
   getRoutines,
   postRoutines,
   getUserProfile,
+  getUserRoutines
 };
