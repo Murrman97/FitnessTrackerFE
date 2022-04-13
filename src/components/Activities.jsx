@@ -26,9 +26,8 @@ const Activities = ({}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const anon = async () => {
-      console.log(token);
       const response = await postActivities(title, description, token);
-      setActivitiesList([response, ...activitiesList]);
+      setActivitiesList([...activitiesList, response]);
     };
     anon();
   };

@@ -37,7 +37,16 @@ const postLoginUser = async (username, password) => {
 
 const getUserRoutines = async () => {};
 
-const getUserProfile = async () => {};
+const getUserProfile = async (token) => {
+  const result = await fetch(`${BASEURL}/users/me`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await result.json();
+  return data;
+};
 
 const getAllActivities = async () => {
   const result = await fetch(`${BASEURL}/activities`);
@@ -74,7 +83,6 @@ const getRoutines = async () => {
 };
 
 const postRoutines = async (name, goal, isPublic, token) => {
-  console.log();
   const result = await fetch(`${BASEURL}/routines`, {
     method: "POST",
     headers: {
@@ -84,7 +92,7 @@ const postRoutines = async (name, goal, isPublic, token) => {
     body: JSON.stringify({
       name,
       goal,
-      isPublic
+      isPublic,
     }),
   });
   const data = await result.json();
@@ -111,4 +119,5 @@ export {
   postLoginUser,
   getRoutines,
   postRoutines,
+  getUserProfile,
 };

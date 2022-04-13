@@ -11,7 +11,8 @@ const Logout = () => {
 
   return (
     <form
-      onSubmit={() => {
+      onSubmit={(e) => {
+        e.preventDefault();
         logoutUser();
       }}
     >

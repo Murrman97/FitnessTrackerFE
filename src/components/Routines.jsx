@@ -25,7 +25,7 @@ const Routines = ({}) => {
       console.log(token);
       const response = await postRoutines(name, goal, isPublic, token);
 
-      setRoutineList([response, ...routineList]);
+      setRoutineList([...routineList, response]);
     };
     anon();
   };
