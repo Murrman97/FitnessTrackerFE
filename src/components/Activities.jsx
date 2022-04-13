@@ -8,7 +8,7 @@ import {
 import useAuth from "../hooks/useAuth";
 import useContent from "../hooks/useContent";
 
-const Activities = ({}) => {
+const Activities = () => {
   const { activitiesList, setActivitiesList } = useContent();
   const { loggedIn, token } = useAuth();
   const [title, setTitle] = useState();
@@ -16,8 +16,7 @@ const Activities = ({}) => {
 
   useEffect(() => {
     const allActivities = async () => {
-      const results = await getAllActivities();
-      console.log(results);
+      const results = await getAllActivities();;
       setActivitiesList(results);
     };
     allActivities();
@@ -46,16 +45,17 @@ const Activities = ({}) => {
     <div>
       {loggedIn ? (
         <form onSubmit={handleSubmit}>
+          <h4>Create An Activity</h4>
           <input
             value={title}
             type='text'
-            placeholder='title'
+            placeholder='Activity Name'
             onChange={handleTitle}
           ></input>
           <input
             value={description}
             type='text'
-            placeholder='description'
+            placeholder='Activity Description'
             onChange={handleDescription}
           ></input>
           <button type='submit'>Create</button>

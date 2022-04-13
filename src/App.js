@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Activities, Register, Login, Routines, Navbar } from "./components";
+import { Activities, Register, Login, Routines, Navbar, MyRoutines } from "./components";
 
 function App() {
   const [activitiesList, setActivitiesList] = useState();
@@ -30,7 +30,7 @@ function App() {
           <Routines routineList={routineList} setRoutineList={setRoutineList} />
         }
       />
-      <Route path="/My-Routines" element={<Activities />} />
+      <Route path="/My-Routines" element={<MyRoutines />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/" element={<Activities />} />

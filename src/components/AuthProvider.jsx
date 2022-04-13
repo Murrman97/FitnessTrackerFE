@@ -12,6 +12,7 @@ const AuthProvider = ({ children }) => {
       if (localStorage.getItem("token")) {
         // Pretend this is from a fetchUser()
         const user = await getUserProfile(token);
+        console.log("AUTH", user)
         setToken(localStorage.getItem("token"));
         setLoggedIn(true);
         setUser(user);

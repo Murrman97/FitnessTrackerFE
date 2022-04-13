@@ -2,7 +2,6 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { BrowserRouter as Router } from "react-router-dom";
 import AuthProvider from "./components/AuthProvider";
-import ContentContext from "./ContentContext";
 import ContentProvider from "./components/ContentProvider";
 
 const container = document.getElementById("root");
