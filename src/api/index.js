@@ -37,13 +37,21 @@ const postLoginUser = async (username, password) => {
 
 const getUserRoutines = async () => {};
 
-const getUserProfile = async () => {};
+const getUserProfile = async (token) => {
+  const result = await fetch(`${BASEURL}/users/me`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await result.json();
+  return data;
+};
 
 const getAllActivities = async () => {
   const result = await fetch(`${BASEURL}/activities`);
 
   const data = await result.json();
-  console.log(result);
   return data;
 };
 
@@ -60,7 +68,6 @@ const postActivities = async (name, description, token) => {
     }),
   });
   const data = await result.json();
-  console.log(result);
   return data;
 };
 
@@ -72,11 +79,26 @@ const getRoutines = async () => {
   const result = await fetch(`${BASEURL}/routines`);
 
   const data = await result.json();
-  console.log(result);
   return data;
 };
 
-const postRoutines = async () => {};
+const postRoutines = async (name, goal, isPublic, token) => {
+  const result = await fetch(`${BASEURL}/routines`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      name,
+      goal,
+      isPublic,
+    }),
+  });
+  const data = await result.json();
+  console.log(result);
+  return data;
+};
 
 const patchRoutines = async () => {};
 
@@ -96,4 +118,6 @@ export {
   postRegisterUser,
   postLoginUser,
   getRoutines,
+  postRoutines,
+  getUserProfile,
 };

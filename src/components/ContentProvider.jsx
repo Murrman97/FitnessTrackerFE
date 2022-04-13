@@ -8,15 +8,6 @@ const ContentProvider = ({ children }) => {
   const [routineList, setRoutineList] = useState();
   const { token, setToken } = useAuth();
 
-    // useEffect(() => {
-    //   const allActivities = async () => {
-    //     const results = await getAllActivities();
-    //     console.log(results);
-    //     setActivitiesList(results);
-    //   };
-    //   allActivities();response
-    // }, []);
-
   return (
     <ContentContext.Provider
       value={{ routineList, setRoutineList, activitiesList, setActivitiesList }}
