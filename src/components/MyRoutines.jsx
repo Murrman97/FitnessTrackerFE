@@ -19,7 +19,7 @@ useEffect(()=>{const getMyRoutines = async () => {
     console.log("USERROUTINES", userRoutines)
     setUserRoutines(userRoutines)
 }
-getMyRoutines()}, [])
+getMyRoutines()}, [setRoutineList])
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -67,7 +67,6 @@ getMyRoutines()}, [])
                 <div key={routine.id}>
                   <h2>{routine.name}</h2>
                   <h4>{routine.goal}</h4>
-                  <h4>{routine.creatorName}</h4>
                   {routine.activities
                     ? routine.activities.map((routineActivities) => {
                         return (
