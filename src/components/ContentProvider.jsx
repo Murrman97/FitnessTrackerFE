@@ -6,7 +6,14 @@ import useAuth from "../hooks/useAuth";
 const ContentProvider = ({ children }) => {
   const [activitiesList, setActivitiesList] = useState();
   const [routineList, setRoutineList] = useState();
-  const { token, setToken } = useAuth();
+  
+  useEffect(() => {
+    const allActivities = async () => {
+      const results = await getAllActivities();;
+      setActivitiesList(results);
+    };
+    allActivities();
+  }, []);
 
   return (
     <ContentContext.Provider

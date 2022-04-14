@@ -14,13 +14,13 @@ const Activities = () => {
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
 
-  useEffect(() => {
-    const allActivities = async () => {
-      const results = await getAllActivities();;
-      setActivitiesList(results);
-    };
-    allActivities();
-  }, []);
+  // useEffect(() => {
+  //   const allActivities = async () => {
+  //     const results = await getAllActivities();;
+  //     setActivitiesList(results);
+  //   };
+  //   allActivities();
+  // }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();

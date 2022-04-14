@@ -14,16 +14,9 @@ const MyRoutines = () => {
   const { loggedIn, token, user, userRoutines, setUserRoutines } = useAuth();
   const [name, setName] = useState();
   const [goal, setGoal] = useState();
-  const [isPublic, setIsPublic] = useState(true);
+  const [isPublic, setIsPublic] = useState(null);
 
-  useEffect(() => {
-    // const getMyRoutines = async () => {
-    //   const userRoutine = await getUserRoutines(user.username, token);
-    //   console.log("USERROUTINES", userRoutines);
-    //   setUserRoutines(userRoutine);
-    // };
-    // getMyRoutines();
-  }, [userRoutines]);
+  useEffect(() => {}, [userRoutines]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -49,10 +42,7 @@ const MyRoutines = () => {
       localStorage.getItem("token"),
       e.target.value
     );
-    // Array.prototype.reject = function(fn){return this.filter(x => !fn(x))}
     const results = userRoutines.filter((result) => {
-      console.log(typeof result.id, "resultID");
-      console.log(e.target.value, "Value");
       return result.id != e.target.value;
     });
     console.log(results);
@@ -66,59 +56,56 @@ const MyRoutines = () => {
           <h4>Create A Routine</h4>
           <input
             value={name}
-            type='text'
-            placeholder='Routine Name'
+            type="text"
+            placeholder="Routine Name"
             onChange={handleName}
           ></input>
           <input
             value={goal}
-            type='text'
-            placeholder='Routine Goal'
+            type="text"
+            placeholder="Routine Goal"
             onChange={handleGoal}
           ></input>
-          <button type='submit'>Create</button>
+          <button type="submit">Create</button>
         </form>
       ) : null}
       {!userRoutines ? null : (
         <>
           {userRoutines.map((routine) => {
-            if (routine.isPublic) {
-              return (
-                <div key={routine.id}>
-                  <h2>{routine.name}</h2>
-                  <h4>{routine.goal}</h4>
-                  <Link
-                    to={{
-                      pathname: "/editRoutine",
-                      state: { routine: routine },
-                    }}
-                  >
-                    <button value={routine.id} type='submit'>
-                      Edit Post
-                    </button>
-                  </Link>
-                  <button
-                    value={routine.id}
-                    type='submit'
-                    onClick={deletingRoutine}
-                  >
-                    Delete Post
+            return (
+              <div key={routine.id}>
+                <h2>{routine.name}</h2>
+                <h4>{routine.goal}</h4>
+
+                <Link
+                  to={ "/editRoutine"}
+                    state={ {routine: routine }}
+                >
+                  <button value={routine.id} type="submit">
+                    Edit Post
                   </button>
-                  {routine.activities
-                    ? routine.activities.map((routineActivities) => {
-                        return (
-                          <div key={routineActivities.id}>
-                            <h6>{routineActivities.name}</h6>
-                            <h6>{routineActivities.description}</h6>
-                            <h6>{routineActivities.duration}</h6>
-                            <h6>{routineActivities.count}</h6>
-                          </div>
-                        );
-                      })
-                    : null}
-                </div>
-              );
-            }
+                </Link>
+                <button
+                  value={routine.id}
+                  type="submit"
+                  onClick={deletingRoutine}
+                >
+                  Delete Post
+                </button>
+                {routine.activities
+                  ? routine.activities.map((routineActivities) => {
+                      return (
+                        <div key={routineActivities.id}>
+                          <h6>{routineActivities.name}</h6>
+                          <h6>{routineActivities.description}</h6>
+                          <h6>{routineActivities.duration}</h6>
+                          <h6>{routineActivities.count}</h6>
+                        </div>
+                      );
+                    })
+                  : null}
+              </div>
+            );
           })}
         </>
       )}

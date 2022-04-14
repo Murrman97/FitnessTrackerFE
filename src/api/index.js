@@ -109,9 +109,26 @@ const postRoutines = async (name, goal, isPublic, token) => {
   return data;
 };
 
-const patchRoutines = async () => {};
+const patchRoutines = async (token, routineId, name, goal, isPublic) => {
+  const result = await fetch(`${BASEURL}/routines/${routineId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      name,
+      goal,
+      isPublic,
+    }),
+  });
+  const data = await result.json();
+  console.log(result);
+  return data;
+};
 
-const deleteRoutines = async (token, routineId ) => {
+
+const deleteRoutines = async (token, routineId) => {
   const result = await fetch(`${BASEURL}/routines/${routineId}`, {
     method: "DELETE",
     headers: {
@@ -123,7 +140,23 @@ const deleteRoutines = async (token, routineId ) => {
   return data;
 };
 
-const postAttachActivitytoRoutine = async () => {};
+const postAttachActivitytoRoutine = async (
+  routineId,
+  activityId,
+  count,
+  duration
+) => {
+  const result = await fetch(`${BASEURL}/routines/${routineId}/activities`, {
+    method: "POST",
+    body: JSON.stringify({
+      activityId,
+      count,
+      duration,
+    }),
+  });
+  const data = await result.json()
+  return data
+};
 
 const patchRoutineActivity = async () => {};
 
@@ -141,4 +174,6 @@ export {
   getUserProfile,
   getUserRoutines,
   deleteRoutines,
+  postAttachActivitytoRoutine,
+  patchRoutines
 };
