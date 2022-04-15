@@ -7,7 +7,7 @@ import {
   getRoutines,
   deleteRoutines,
   patchRoutineActivity,
-  deleteRoutineActivity
+  deleteRoutineActivity,
 } from "../api";
 import { Link } from "react-router-dom";
 
@@ -17,9 +17,10 @@ const MyRoutines = () => {
   const [name, setName] = useState(null);
   const [goal, setGoal] = useState(null);
   const [isPublic, setIsPublic] = useState(null);
-  const [activityEdit, setActivityEdit] = useState(null)
-  const [count, setCount] = useState(null)
-  const [duration, setDuration] = useState(null)
+  const [activityEdit, setActivityEdit] = useState(null);
+  const [count, setCount] = useState(null);
+  const [duration, setDuration] = useState(null);
+  const [userActivities, setUserActivities] = useState()
   useEffect(() => {}, [userRoutines, activityEdit]);
 
   const handleSubmit = (e) => {
@@ -32,12 +33,10 @@ const MyRoutines = () => {
   };
 
   const handleName = (e) => {
-    
     setName(e.target.value);
   };
 
   const handleGoal = (e) => {
-    
     setGoal(e.target.value);
   };
   const deletingRoutine = async (e) => {
@@ -52,37 +51,42 @@ const MyRoutines = () => {
     console.log(results);
     setUserRoutines(results);
   };
-  const toggleEditActivityForm = (routineActivities) => {
-   console.log(routineActivities, "POOP")
-    setActivityEdit(routineActivities.routineActivityId )
-    setCount(routineActivities.count)
-    setDuration(routineActivities.duration)
-  }
-  
+  const toggleEditActivityForm = (routineActivities, activities) => {
+    
+    setActivityEdit(routineActivities.routineActivityId);
+    setCount(routineActivities.count);
+    setDuration(routineActivities.duration);
+    setUserActivities(activities)
+  };
+
   const handleSubmitActivity = async (e) => {
     e.preventDefault();
-    console.log("123")
-    const result = await patchRoutineActivity(activityEdit, token, count, duration)
-    console.log(result, "THIS IS SUBMITACTIVITY")
-    setActivityEdit(null)
-    const anotherResult = await getUserRoutines(user.username, token)
-    setUserRoutines(anotherResult) 
-  }
+    console.log("123");
+    const result = await patchRoutineActivity(
+      activityEdit,
+      token,
+      count,
+      duration
+    );
+    console.log(result, "THIS IS SUBMITACTIVITY");
+    setActivityEdit(null);
+    const anotherResult = await getUserRoutines(user.username, token);
+    setUserRoutines(anotherResult);
+  };
 
   const handleActivityCount = (e) => {
-    
-    setCount(e.target.value)
-  }
-  
-  const handleActivityDuration = (e) => {
-    setDuration(e.target.value)
-  }
-  
-  const deletingRoutineActivity = async (e) => {
-    await deleteRoutineActivity(activityEdit, token)
+    setCount(e.target.value);
+  };
 
-  }
-  
+  const handleActivityDuration = (e) => {
+    setDuration(e.target.value);
+  };
+
+  const deletingRoutineActivity = async (e) => {
+    const result = await deleteRoutineActivity(activityEdit, token);
+
+  };
+
   return (
     <div>
       {loggedIn ? (
@@ -125,16 +129,41 @@ const MyRoutines = () => {
                 </button>
                 {routine.activities
                   ? routine.activities.map((routineActivities) => {
-                    return (
-                      routineActivities.routineActivityId !== activityEdit ? ( 
+                      return routineActivities.routineActivityId !==
+                        activityEdit ? (
                         <div key={routineActivities.id}>
                           <h6>name:{routineActivities.name}</h6>
                           <h6>description:{routineActivities.description}</h6>
                           <h6>duration:{routineActivities.duration}</h6>
                           <h6>count:{routineActivities.count}</h6>
-                            <button value={routineActivities.id} type="submit" onClick={()=>toggleEditActivityForm(routineActivities)}>
-                              Edit Activity
-                            </button>
+                          <button
+                            value={routineActivities.id}
+                            type="submit"
+                            onClick={() =>
+                              toggleEditActivityForm(routineActivities, routine.activities)
+                            }
+                          >
+                            Edit Activity
+                          </button>
+                        </div>
+                      ) : (
+                        <>
+                          <form onSubmit={handleSubmitActivity}>
+                            <h4>{routineActivities.name}</h4>
+                            <input
+                              value={count}
+                              type="text"
+                              placeholder="Activity Count"
+                              onChange={handleActivityCount}
+                            ></input>
+                            <input
+                              value={duration}
+                              type="text"
+                              placeholder="Activity Duration"
+                              onChange={handleActivityDuration}
+                            ></input>
+                            <button type="submit">Update</button>
+                          </form>
                           <button
                             value={routineActivities.id}
                             type="submit"
@@ -142,24 +171,8 @@ const MyRoutines = () => {
                           >
                             Delete Activity
                           </button>
-                        </div>
-                     ) : <form onSubmit={handleSubmitActivity}>
-                       <h4>{routineActivities.name}</h4>
-                     <input
-                       value={count}
-                       type="text"
-                       placeholder="Activity Count"
-                       onChange={handleActivityCount}
-                     ></input>
-                     <input
-                       value={duration}
-                       type="text"
-                       placeholder="Activity Duration"
-                       onChange={handleActivityDuration}
-                     ></input>
-                     <button type="submit">Update</button>
-                     
-                   </form> )
+                        </>
+                      );
                     })
                   : null}
               </div>
