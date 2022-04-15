@@ -2,16 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import useContent from "../hooks/useContent";
-import { patchRoutines, getUserRoutines } from "../api";
+import { patchRoutines, getUserRoutines, postAttachActivitytoRoutine } from "../api";
 
 const EditMyRoutine = () => {
   const locationState = useLocation();
   const { token, userRoutines, setUserRoutines, user } = useAuth();
   const { activitiesList } = useContent();
   const { routine } = locationState.state;
-  const [name, setName] = useState();
-  const [goal, setGoal] = useState();
+  const [name, setName] = useState(routine.name);
+  const [goal, setGoal] = useState(routine.goal);
   const [isPublic, setIsPublic] = useState(null);
+  const [selectedActivity, setSelectedActivity] = useState(null)
+  const [count, setCount] = useState(null)
+  const [duration, setDuration] = useState(null)
 
   console.log(activitiesList, "XXXX");
   const handleName = (e) => {
@@ -27,6 +30,8 @@ const EditMyRoutine = () => {
 
     const updatingRoutine = async () => {
       await patchRoutines(token, routine.id, name, goal, isPublic);
+      console.log(routine.id, +selectedActivity, +count, +duration)
+      await postAttachActivitytoRoutine(routine.id.toString(), selectedActivity, count, duration)
     };
     updatingRoutine();
     const getMyRoutines = async () => {
@@ -36,6 +41,13 @@ const EditMyRoutine = () => {
     };
     getMyRoutines();
   };
+
+  const handleSelect=(e) => {
+
+      setSelectedActivity(e.target.value)
+    
+  }
+  console.log(selectedActivity)
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -53,13 +65,26 @@ const EditMyRoutine = () => {
           onChange={handleGoal}
         ></input>
 
-        <select>
+        <select onChange={handleSelect}>
           {activitiesList
             ? activitiesList.map((activity) => {
-                return <option id={activity.id} label={activity.name}></option>;
+                return <option value={activity.id} id={activity.id} label={activity.name}></option>;
               })
             : null}
         </select>
+        <input
+          value={count}
+          type="text"
+          placeholder="count"
+          onChange={(e)=>{setCount(e.target.value)}}
+        ></input>
+
+        <input
+          value={duration}
+          type="text"
+          placeholder="duration"
+          onChange={(e)=>{setDuration(e.target.value)}}
+        ></input>
 
         <button type="submit">Update Routine</button>
       </form>

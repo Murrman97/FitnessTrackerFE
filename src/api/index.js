@@ -127,7 +127,6 @@ const patchRoutines = async (token, routineId, name, goal, isPublic) => {
   return data;
 };
 
-
 const deleteRoutines = async (token, routineId) => {
   const result = await fetch(`${BASEURL}/routines/${routineId}`, {
     method: "DELETE",
@@ -148,19 +147,49 @@ const postAttachActivitytoRoutine = async (
 ) => {
   const result = await fetch(`${BASEURL}/routines/${routineId}/activities`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
       activityId,
       count,
       duration,
     }),
   });
-  const data = await result.json()
-  return data
+  const data = await result.json();
+  return data;
 };
 
-const patchRoutineActivity = async () => {};
+const patchRoutineActivity = async (routineActivityId, token, count, duration) => {
+  const result = await fetch(
+    `${BASEURL}/routine_activities/${routineActivityId}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        count,
+        duration,
+      }),
+    }
+  );
+  const data = await result.json();
+  return data;
+};
 
-const deleteRoutineActivity = async () => {};
+const deleteRoutineActivity = async (routineActivityId, token) => {
+  const result = await fetch(`${BASEURL}/routine_activities/${routineActivityId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await result.json();
+  return data;
+};
 
 export {
   getAllActivities,
@@ -175,5 +204,7 @@ export {
   getUserRoutines,
   deleteRoutines,
   postAttachActivitytoRoutine,
-  patchRoutines
+  patchRoutines,
+  patchRoutineActivity,
+  deleteRoutineActivity
 };
