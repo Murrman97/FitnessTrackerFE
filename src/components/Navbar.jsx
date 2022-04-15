@@ -9,7 +9,7 @@ const Navbar = () => {
     <div id='nav-bar'>
       <Link to='routines'>Routines</Link>
       <span> </span>
-      {loggedIn ? <Link to='my-routines'>My Routines</Link> : null}
+      {loggedIn ? <Link to='myRoutines'>My Routines</Link> : null}
       <span> </span>
       <Link to='activities'>Activities</Link>
       <span> </span>
