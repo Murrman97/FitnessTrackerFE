@@ -12,7 +12,6 @@ import {
 import { Link } from "react-router-dom";
 
 const MyRoutines = () => {
-  const { routineList, setRoutineList } = useContent();
   const { loggedIn, token, user, userRoutines, setUserRoutines } = useAuth();
   const [name, setName] = useState(null);
   const [goal, setGoal] = useState(null);
@@ -20,14 +19,13 @@ const MyRoutines = () => {
   const [activityEdit, setActivityEdit] = useState(null);
   const [count, setCount] = useState(null);
   const [duration, setDuration] = useState(null);
-  const [userActivities, setUserActivities] = useState()
-  useEffect(() => {}, [userRoutines, activityEdit]);
+  const [userActivities, setUserActivities] = useState();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const anon = async () => {
       const response = await postRoutines(name, goal, isPublic, token);
-      setRoutineList([...routineList, response]);
+      setUserRoutines([...userRoutines, response]);
     };
     anon();
   };
@@ -52,11 +50,10 @@ const MyRoutines = () => {
     setUserRoutines(results);
   };
   const toggleEditActivityForm = (routineActivities, activities) => {
-    
     setActivityEdit(routineActivities.routineActivityId);
     setCount(routineActivities.count);
     setDuration(routineActivities.duration);
-    setUserActivities(activities)
+    setUserActivities(activities);
   };
 
   const handleSubmitActivity = async (e) => {
@@ -82,9 +79,22 @@ const MyRoutines = () => {
     setDuration(e.target.value);
   };
 
-  const deletingRoutineActivity = async (e) => {
+  const deletingRoutineActivity = async (routineId) => {
     const result = await deleteRoutineActivity(activityEdit, token);
-
+    console.log(routineId);
+    const findUserRoutine = userRoutines.find((userRoutine) => {
+      return userRoutine.id === routineId;
+    });
+    const UserRoutineFiltered = findUserRoutine.activities.filter(
+      (activity) => {
+        return activity.routineActivityId !== activityEdit;
+      }
+    );
+    findUserRoutine.activities = UserRoutineFiltered;
+    const tempRoutineList = userRoutines.filter((routine) => {
+      return routine.id !== routineId;
+    });
+    setUserRoutines([...tempRoutineList, findUserRoutine]);
   };
 
   return (
@@ -94,17 +104,17 @@ const MyRoutines = () => {
           <h4>Create A Routine</h4>
           <input
             value={name}
-            type="text"
-            placeholder="Routine Name"
+            type='text'
+            placeholder='Routine Name'
             onChange={handleName}
           ></input>
           <input
             value={goal}
-            type="text"
-            placeholder="Routine Goal"
+            type='text'
+            placeholder='Routine Goal'
             onChange={handleGoal}
           ></input>
-          <button type="submit">Create</button>
+          <button type='submit'>Create</button>
         </form>
       ) : null}
       {!userRoutines ? null : (
@@ -116,16 +126,16 @@ const MyRoutines = () => {
                 <h4>{routine.goal}</h4>
 
                 <Link to={"/editRoutine"} state={{ routine: routine }}>
-                  <button value={routine.id} type="submit">
-                    Edit Post
+                  <button value={routine.id} type='submit'>
+                    Edit Routine
                   </button>
                 </Link>
                 <button
                   value={routine.id}
-                  type="submit"
+                  type='submit'
                   onClick={deletingRoutine}
                 >
-                  Delete Post
+                  Delete Routine
                 </button>
                 {routine.activities
                   ? routine.activities.map((routineActivities) => {
@@ -138,9 +148,12 @@ const MyRoutines = () => {
                           <h6>count:{routineActivities.count}</h6>
                           <button
                             value={routineActivities.id}
-                            type="submit"
+                            type='submit'
                             onClick={() =>
-                              toggleEditActivityForm(routineActivities, routine.activities)
+                              toggleEditActivityForm(
+                                routineActivities,
+                                routine.activities
+                              )
                             }
                           >
                             Edit Activity
@@ -152,22 +165,24 @@ const MyRoutines = () => {
                             <h4>{routineActivities.name}</h4>
                             <input
                               value={count}
-                              type="text"
-                              placeholder="Activity Count"
+                              type='text'
+                              placeholder='Activity Count'
                               onChange={handleActivityCount}
                             ></input>
                             <input
                               value={duration}
-                              type="text"
-                              placeholder="Activity Duration"
+                              type='text'
+                              placeholder='Activity Duration'
                               onChange={handleActivityDuration}
                             ></input>
-                            <button type="submit">Update</button>
+                            <button type='submit'>Update</button>
                           </form>
                           <button
                             value={routineActivities.id}
-                            type="submit"
-                            onClick={deletingRoutineActivity}
+                            type='submit'
+                            onClick={() => {
+                              deletingRoutineActivity(routine.id);
+                            }}
                           >
                             Delete Activity
                           </button>

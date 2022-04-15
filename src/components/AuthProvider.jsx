@@ -6,7 +6,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userRoutines, setUserRoutines] = useState([]);
+  const [userRoutines, setUserRoutines] = useState([]);console.log(userRoutines);
 
   useEffect(() => {
     async function getUser() {

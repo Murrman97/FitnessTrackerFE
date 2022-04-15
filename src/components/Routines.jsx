@@ -1,4 +1,4 @@
-import { getRoutines, postRoutines } from "../api";
+import { postRoutines } from "../api";
 import React, { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import useContent from "../hooks/useContent";
@@ -6,20 +6,9 @@ import useContent from "../hooks/useContent";
 const Routines = () => {
   const { routineList, setRoutineList } = useContent();
   const { loggedIn, token } = useAuth();
-  
-
-  useEffect(() => {
-    const routine = async () => {
-      const allRoutines = await getRoutines();
-      setRoutineList(allRoutines);
-    };
-    routine();
-  }, []);
-
-  
 
   return (
-    <div className="routines">
+    <div className='routines'>
       {routineList ? (
         <>
           {routineList.map((routine) => {
